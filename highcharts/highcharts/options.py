@@ -502,7 +502,8 @@ class xAxisOptions(BaseOptions):
         "tickmarkPlacement": basestring,
         "title": (Title, dict),
         "type": basestring,
-        "units": list
+        "units": list,
+        "visible": bool
     }
 
 
@@ -569,7 +570,8 @@ class yAxisOptions(BaseOptions):
         "tickmarkPlacement": basestring,
         "title": (Title, dict),
         "type": basestring,
-        "units": list    
+        "units": list,
+        "visible": bool
     }
 
 class zAxisOptions(BaseOptions): #only for 3D plots
@@ -635,7 +637,8 @@ class zAxisOptions(BaseOptions): #only for 3D plots
         "tickmarkPlacement": basestring,
         "title": (Title, dict),
         "type": basestring,
-        "units": list    
+        "units": list,
+        "visible": bool
     }
 
 
