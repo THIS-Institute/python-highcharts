@@ -311,7 +311,7 @@ class Highchart(object):
 
         self.buildcontainer()
         options = self.options
-        options['series'] = [i['data'] for i in self.data_temp]
+        options['series'] = [i.data for i in self.data_temp]
         self.option = json.dumps(options, cls = HighchartsEncoder)
         self.setoption = json.dumps(self.setOptions, cls = HighchartsEncoder)
         self.data = []
