@@ -314,7 +314,7 @@ class Highchart(object):
         options['series'] = self.data
         self.option = json.dumps(options, cls = HighchartsEncoder)
         self.setoption = json.dumps(self.setOptions, cls = HighchartsEncoder)
-        self.data = []
+        #  self.data = []
        
         # DEM 2017/04/25: Make 'data' available as an array
         # ... this permits jinja2 array access to each data definition
