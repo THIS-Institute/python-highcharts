@@ -310,11 +310,11 @@ class Highchart(object):
         """build HTML content only, no header or body tags"""
 
         self.buildcontainer()
-        options = self.setOptions
+        options = self.options
         options['series'] = self.data
-        self.option = json.dumps(self.options, cls = HighchartsEncoder)
+        self.option = json.dumps(options, cls = HighchartsEncoder)
         self.setoption = json.dumps(self.setOptions, cls = HighchartsEncoder)
-        self.data = json.dumps(self.data_temp, cls = HighchartsEncoder)
+        self.data = []
        
         # DEM 2017/04/25: Make 'data' available as an array
         # ... this permits jinja2 array access to each data definition
