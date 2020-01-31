@@ -333,13 +333,13 @@ class Highmap(object):
         else:
             self.options[option_type].update_dict(**option_dict)
 
-    def set_dict_options(self, options):
+    def set_dict_options(self, options, force_options=False):
         """for dictionary-like inputs (as object in Javascript)
         options must be in python dictionary format
         """
         if isinstance(options, dict):
             for key, option_data in options.items():
-                self.set_options(key, option_data)
+                self.set_options(key, option_data, force_options=force_options)
         else:
             raise OptionTypeError("Not An Accepted Input Format: %s. Must be Dictionary" %type(options))
 
