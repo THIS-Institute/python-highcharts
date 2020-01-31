@@ -318,7 +318,7 @@ class Highmap(object):
         """set plot options"""
 
         if force_options: # not to use unless it is really needed
-            self.options[option_type].update(option_dict)
+            self.options[option_type] = option_dict
         elif (option_type == 'yAxis' or option_type == 'xAxis') and isinstance(option_dict, list):
             self.options[option_type] = MultiAxis(option_type)
             for each_dict in option_dict:
