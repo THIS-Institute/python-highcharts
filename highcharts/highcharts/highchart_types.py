@@ -462,6 +462,9 @@ PLOT_OPTION_ALLOWED_ARGS = {
     "stickyTracking": bool,
     "turboThreshold": int,
   },
+  'responsive': {
+    'rules': [list, dict]
+  }
 }
 
 DATA_SERIES_ALLOWED_OPTIONS = {
