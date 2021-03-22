@@ -18,7 +18,8 @@ from .options import BaseOptions, ChartOptions, ColorAxisOptions, \
     GlobalOptions, LabelsOptions, LangOptions, \
     LegendOptions, LoadingOptions, NavigationOptions, PaneOptions, \
     PlotOptions, SeriesData, SubtitleOptions, TitleOptions, \
-    TooltipOptions, xAxisOptions, yAxisOptions, zAxisOptions, MultiAxis
+    TooltipOptions, xAxisOptions, yAxisOptions, zAxisOptions, \
+    MultiAxis, ResponsiveOptions
 
 from .highchart_types import Series, SeriesOptions
 from .common import Levels, Formatter, CSSObject, SVGObject, JSfunction, RawJavaScriptText, \
@@ -32,7 +33,7 @@ jinja2_env = Environment(lstrip_blocks=True, trim_blocks=True, loader=pl)
 
 template_content = jinja2_env.get_template(CONTENT_FILENAME)
 template_page = jinja2_env.get_template(PAGE_FILENAME)
-    
+
 
 class Highchart(object):
     """
@@ -64,7 +65,7 @@ class Highchart(object):
         self.template_page_highcharts = template_page
         self.template_content_highcharts = template_content
 
-        
+
         # set Javascript src, Highcharts lib needs to make sure it's up to date
         self.JSsource = [
                 'https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
@@ -136,7 +137,8 @@ class Highchart(object):
             "title": TitleOptions(),
             "tooltip": TooltipOptions(),
             "xAxis": xAxisOptions(),
-            "yAxis": yAxisOptions(),   
+            "yAxis": yAxisOptions(),
+            "responsive": ResponsiveOptions(),
         }
 
         self.setOptions = {
@@ -210,7 +212,7 @@ class Highchart(object):
             self.add_JSsource('http://code.highcharts.com/modules/treemap.js')
 
         series_data = Series(data, series_type=series_type, **kwargs)
-       
+
         series_data.__options__().update(SeriesOptions(series_type=series_type, **kwargs).__options__())
         self.data_temp.append(series_data)
 
@@ -264,7 +266,7 @@ class Highchart(object):
             else:
                 self.jscript_end = js_script
         else:
-            raise OptionTypeError("Not An Accepted script location: %s, either 'head' or 'end'" 
+            raise OptionTypeError("Not An Accepted script location: %s, either 'head' or 'end'"
                                 % js_loc)
 
 
@@ -282,7 +284,7 @@ class Highchart(object):
         elif option_type == 'zAxis':
             self.options.update({'zAxis': zAxisOptions()})
             self.options[option_type].update_dict(**option_dict)
-        elif option_type in ["global" , "lang"]: #Highcharts.setOptions: 
+        elif option_type in ["global" , "lang"]: #Highcharts.setOptions:
             self.setOptions[option_type].update_dict(**option_dict)
         elif option_type == 'colorAxis':
             self.options.update({'colorAxis': ColorAxisOptions()})
@@ -315,13 +317,13 @@ class Highchart(object):
         self.option = json.dumps(options, cls = HighchartsEncoder)
         self.setoption = json.dumps(self.setOptions, cls = HighchartsEncoder)
         self.data = []
-       
+
         # DEM 2017/04/25: Make 'data' available as an array
         # ... this permits jinja2 array access to each data definition
         # ... which is useful for looping over multiple data sources
         self.data_list = []
 
-        if self.drilldown_flag: 
+        if self.drilldown_flag:
             self.drilldown_data = json.dumps(self.drilldown_data_temp, cls = HighchartsEncoder)
         self._htmlcontent = self.template_content_highcharts.render(chart=self).encode('utf-8')
 
@@ -336,11 +338,11 @@ class Highchart(object):
         self.content = self._htmlcontent.decode('utf-8') # need to ensure unicode
         self._htmlcontent = self.template_page_highcharts.render(chart=self)
         return self._htmlcontent
-        
+
 
     def buildhtmlheader(self):
         """generate HTML header content"""
-        
+
         if self.drilldown_flag:
             self.add_JSsource('http://code.highcharts.com/modules/drilldown.js')
 
@@ -404,7 +406,7 @@ class Highchart(object):
         htmlsrcdoc = re.sub(' +', ' ', htmlsrcdoc)
         width = int(self.options['chart'].__dict__['width']) if self.options['chart'].__dict__.get('width') else 820
         height = int(self.options['chart'].__dict__['height']) if self.options['chart'].__dict__.get('height') else 520
-        
+
         if self.options['chart'].__dict__.get('options3d'):
             if len(htmlsrcdoc) < 99965000 :
                 return '<iframe style="border:0;outline:none;overflow:hidden" src="data:text/html,'+ htmlsrcdoc + '" height=' + str(height) + \
@@ -413,7 +415,7 @@ class Highchart(object):
                 return '<iframe style="border:0;outline:none;overflow:hidden" srcdoc="'+ htmlsrcdoc + '" height='+ str(height) + ' width=' + str(width) + '></iframe>'
         else:
             return '<iframe style="border:0;outline:none;overflow:hidden" srcdoc="'+ htmlsrcdoc + '" height='+ str(height) + ' width=' + str(width) + '></iframe>'
-    
+
 
     def __str__(self):
         """return htmlcontent"""
@@ -423,11 +425,11 @@ class Highchart(object):
     def save_file(self, filename = 'Chart'):
         """ save htmlcontent as .html file """
         filename = filename + '.html'
-        
+
         with open(filename, 'w') as f:
             #self.buildhtml()
             f.write(self.htmlcontent)
-        
+
         f.closed
 
 class HighchartsEncoder(json.JSONEncoder):
@@ -448,7 +450,7 @@ class HighchartsEncoder(json.JSONEncoder):
             return RawJavaScriptText(obj)
         elif isinstance(obj, BaseOptions) or isinstance(obj, MultiAxis):
             return obj.__jsonable__()
-        elif isinstance(obj, CSSObject) or isinstance(obj, Formatter) or isinstance(obj, JSfunction): 
+        elif isinstance(obj, CSSObject) or isinstance(obj, Formatter) or isinstance(obj, JSfunction):
             return obj.__jsonable__()
         elif isinstance(obj, SeriesOptions) or isinstance(obj, Series):
             return obj.__jsonable__()
