@@ -457,6 +457,7 @@ class DrillUpButton(CommonObject):
 class Labels(CommonObject):   
     ALLOWED_OPTIONS = {
     "align": basestring,
+    "autoRotation": [int],
     "backgroundColor": (ColorObject, basestring, dict),
     "borderColor": (ColorObject, basestring, dict),
     "borderRadius": [float, int],
