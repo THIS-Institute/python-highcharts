@@ -255,6 +255,7 @@ class ExportingOptions(BaseOptions):
         "type": basestring,
         "url": basestring,
         "width": int,
+        "showTable": False
     }
 
 
