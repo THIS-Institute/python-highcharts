@@ -71,7 +71,8 @@ class Highchart(object):
                 'https://code.highcharts.com/6/highcharts.js',
                 'https://code.highcharts.com/6/highcharts-more.js',
                 'https://code.highcharts.com/6/modules/heatmap.js',
-                'https://code.highcharts.com/6/modules/exporting.js'
+                'https://code.highcharts.com/6/modules/exporting.js',
+                "https://code.highcharts.com/modules/accessibility.js",
             ]
 
         # set CSS src
